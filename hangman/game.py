@@ -1,11 +1,18 @@
 from .exceptions import *
+from random import randint
 
 # Complete with your own, just for fun :)
 LIST_OF_WORDS = [ 'Python', 'Javascript', 'Ruby', 'Java' ]
 
 
 def _get_random_word(list_of_words):
-    pass
+    if list_of_words == []:
+        raise InvalidListOfWordsException('List cannot be empty')
+    num_range = len(list_of_words) - 1 
+    i = randint(0, num_range)
+    chosen_word = list_of_words[i]
+    
+    return chosen_word
 
 
 def _mask_word(word):
