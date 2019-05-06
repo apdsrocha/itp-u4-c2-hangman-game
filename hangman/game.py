@@ -1,7 +1,7 @@
 from .exceptions import *
 
 # Complete with your own, just for fun :)
-LIST_OF_WORDS = []
+LIST_OF_WORDS = [ 'Python', 'Javascript', 'Ruby', 'Java' ]
 
 
 def _get_random_word(list_of_words):
@@ -9,7 +9,11 @@ def _get_random_word(list_of_words):
 
 
 def _mask_word(word):
-    pass
+    num_of_asterix = len(word)
+    if not word:
+	    raise InvalidWordException('Please add a word')
+    
+    return '*' * num_of_asterix
 
 
 def _uncover_word(answer_word, masked_word, character):
