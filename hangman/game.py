@@ -4,7 +4,6 @@ from random import randint
 # Complete with your own, just for fun :)
 LIST_OF_WORDS = [ 'Python', 'Javascript', 'Ruby', 'Java' ]
 
-
 def _get_random_word(list_of_words):
     if list_of_words == []:
         raise InvalidListOfWordsException('List cannot be empty')
@@ -17,20 +16,19 @@ def _get_random_word(list_of_words):
 def _mask_word(word):
     num_of_asterix = len(word)
     if not word:
-	    raise InvalidWordException('Please add a word')
+	    raise InvalidWordException('Invalid word')
     
     return '*' * num_of_asterix
 
-
 def _uncover_word(answer_word, masked_word, character):
     if not answer_word or not masked_word:
-        raise InvalidWordException('Please provide word')
+        raise InvalidWordException('Invalid word')
 
     if len(character) > 1:
-        raise InvalidGuessedLetterException('Please provide guess')
+        raise InvalidGuessedLetterException('Invalid guess')
 
     if len(answer_word) != len(masked_word):
-        raise InvalidWordException('Incorrect info provided')
+        raise InvalidWordException('Incorrect info')
 
     answer = answer_word.lower()
     if character.lower() not in answer:
@@ -46,24 +44,24 @@ def _uncover_word(answer_word, masked_word, character):
 
     return new_word
 
-def _is_game_won(game):
+def game_won(game):
     return game['answer_word'].lower() == game['masked_word'].lower()
 
 
-def _is_game_lost(game):
+def game_lost(game):
     return game['remaining_misses'] <= 0
 
 
-def _is_game_finished(game):
-    return _is_game_lost(game) or _is_game_won(game)
+def game_finished(game):
+    return game_lost(game) or game_won(game)
 
 def guess_letter(game, letter):
     letter = letter.lower()
     if letter in game['previous_guesses']:
-        raise InvalidGuessedLetterException()
+        raise InvalidGuessedLetterException('Invalid Guessed Letter')
 
-    if _is_game_finished(game): 
-        raise GameFinishedException()
+    if game_finished(game): 
+        raise GameFinishedException('Game Finished')
 
     previous_masked = game['masked_word']
     new_masked = _uncover_word(game['answer_word'], previous_masked, letter)
@@ -75,14 +73,13 @@ def guess_letter(game, letter):
 
     game['previous_guesses'].append(letter)
 
-    if _is_game_won(game):
-        raise GameWonException()
+    if game_won(game):
+        raise GameWonException('Game Won')
 
-    if _is_game_lost(game):
-        raise GameLostException()
+    if game_lost(game):
+        raise GameLostException('Game Lost')
 
     return new_masked
-
 
 def start_new_game(list_of_words=None, number_of_guesses=5):
     if list_of_words is None:
